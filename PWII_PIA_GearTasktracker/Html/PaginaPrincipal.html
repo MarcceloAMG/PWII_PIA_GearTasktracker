@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GearTask Tracker</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <!-- CSS compartidos por todas las pantallas -->
+  <link rel="stylesheet" href="../Css/EstiloBase.css">
+  <link rel="stylesheet" href="../Css/Cargando.css">
+
+  <link rel="stylesheet" href="../Css/EstiloPrincipal.css">
+</head>
+
+<body>
+
+  <!-- Loader reutilizable -->
+  <div id="page-loader" class="page-loader">
+    <i class="bi bi-gear-fill loader-gear"></i>
+  </div>
+
+  <section class="hero-section d-flex align-items-center justify-content-center">
+
+    <div class="hero-bg-image"></div>
+    <div class="hero-bg-overlay"></div>
+
+    <!-- Engranajes decorativos -->
+    <i class="bi bi-gear-fill gear" style="--size:9rem; --top:-3rem; --left:-3rem; --duration:25s;"></i>
+    <i class="bi bi-gear-fill gear" style="--size:6rem; --bottom:-2rem; --right:5%; --duration:18s; --dir:reverse;"></i>
+    <i class="bi bi-gear-fill gear" style="--size:4rem; --top:10%; --right:10%; --duration:14s;"></i>
+    <i class="bi bi-gear-fill gear" style="--size:5rem; --bottom:8%; --left:8%; --duration:20s; --dir:reverse;"></i>
+    <i class="bi bi-gear-fill gear" style="--size:3rem; --top:55%; --right:20%; --duration:10s;"></i>
+
+    <div class="hero-content text-center position-relative">
+      <h1 class="hero-title">GearTask <span class="hero-title-accent">Tracker</span></h1>
+
+      <div class="mt-5 d-flex justify-content-center gap-3 flex-wrap">
+        <a href="login.html" class="btn btn-outline-light btn-glow rounded-pill px-4 py-2">Iniciar Sesión</a>
+        <a href="registro.html" class="btn btn-outline-light btn-glow rounded-pill px-4 py-2">Registrarse</a>
+      </div>
+    </div>
+
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../Js/Pantallas.js"></script>
+</body>
+</html>

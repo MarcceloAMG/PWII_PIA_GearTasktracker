@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero de Proyecto | GearTask Tracker</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="../Css/EstiloBase.css">
+    <link rel="stylesheet" href="../Css/EstiloAreaTrabajo.css">
+    <link rel="stylesheet" href="../Css/EstiloFormulario.css">
+    <link rel="stylesheet" href="../Css/EstiloProyecto.css">
+</head>
+<body>
+
+  <div class="app-shell flex-column">
+
+    <header class="topbar w-100 d-flex align-items-center justify-content-between px-4 py-3 z-3 border-bottom border-secondary border-opacity-25">
+      <div class="d-flex align-items-center gap-3">
+        <a href="AreaTrabajo.html" class="btn btn-outline-light btn-glow btn-glow-danger rounded-pill px-3 py-1 d-flex align-items-center gap-2 small">
+          <i class="bi bi-arrow-left"></i>
+          <span>Volver</span>
+        </a>
+        <h4 class="text-white fw-bold mb-0" id="lblTituloProyecto">Proyecto: TAREAS01</h4>
+      </div>
+
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-warning rounded-pill px-3 py-1 fw-bold text-dark small" id="btnAutoAsignar">
+          <i class="bi bi-cpu-fill me-1"></i> Asignación Automática
+        </button>
+        <button class="btn btn-outline-light btn-glow rounded-pill px-3 py-1 small" data-bs-toggle="modal" data-bs-target="#modalNuevaTarea">
+          <i class="bi bi-plus-lg me-1"></i> Nueva Tarea
+        </button>
+      </div>
+    </header>
+
+    <div class="flex-grow-1 w-100 d-flex position-relative overflow-hidden">
+
+      <main class="flex-grow-1 p-4 overflow-auto z-2">
+        <div class="card project-board-card p-4 rounded-4 shadow border-secondary mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-white fw-bold m-0"><i class="bi bi-kanban me-2"></i>Gestión de Tareas del Tablero</h5>
+            <small class="text-white-50">Límite general: Máximo 3 tareas activas por usuario</small>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle mb-0">
+              <thead>
+                <tr class="text-white-50 border-secondary">
+                  <th>Tarea</th>
+                  <th>Rol Requerido</th>
+                  <th>Asignado a</th>
+                  <th>Estado</th>
+                  <th class="text-end">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="tablaTareasProyecto">
+                <!-- Tarea 1 -->
+                <tr data-tarea-id="101" data-rol="Programador Frontend">
+                  <td>
+                    <div class="fw-bold text-white">Diseñar interfaz de notificaciones</div>
+                    <small class="text-white-50">Maquetación con Bootstrap y CSS responsivo</small>
+                  </td>
+                  <td><span class="badge bg-info text-dark">Programador Frontend</span></td>
+                  <td class="col-asignado"><span class="text-white-50 italic">Sin asignar</span></td>
+                  <td><span class="badge bg-secondary badge-estado">Disponible</span></td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-outline-warning rounded-pill btn-tomar">Tomar Voluntariamente</button>
+                    <button class="btn btn-sm btn-outline-light rounded-pill btn-manual ms-1" data-bs-toggle="modal" data-bs-target="#modalAsignarManual">Asignar</button>
+                  </td>
+                </tr>
+
+                <!-- Tarea 2 en estado de Limbo -->
+                <tr data-tarea-id="102" data-rol="Documentador" class="table-danger-custom">
+                  <td>
+                    <div class="fw-bold text-white">Redactar manual de usuario</div>
+                    <small class="text-white-50">Documento técnico en formato PDF</small>
+                  </td>
+                  <td><span class="badge bg-primary">Documentador</span></td>
+                  <td class="col-asignado"><span class="text-white fw-semibold">Luis</span></td>
+                  <td><span class="badge bg-danger badge-estado">Limbo (Exceso)</span></td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-warning rounded-pill text-dark fw-bold btn-limbo-aprobar">Aprobar Excepción</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+
+      <!-- SIDEBAR DERECHA: INTEGRANTES DEL EQUIPO -->
+      <aside class="sidebar sidebar-months border-start border-secondary z-2">
+        <div class="p-3 border-bottom border-secondary d-flex justify-content-between align-items-center">
+          <h6 class="mb-0 fw-bold text-white"><i class="bi bi-people-fill me-2"></i>Equipo del Proyecto</h6>
+          <button class="btn btn-sm btn-outline-light rounded-circle" data-bs-toggle="modal" data-bs-target="#modalAddMiembro" title="Añadir más miembros">
+            <i class="bi bi-person-plus-fill"></i>
+          </button>
+        </div>
+
+        <div class="p-3 overflow-auto flex-grow-1" id="listaIntegrantesProyecto">
+          <div class="team-member-item d-flex align-items-center gap-2 p-2 rounded-3 mb-2">
+            <img src="../Assets/perfil.jpg" alt="Perfil" class="team-avatar-sm rounded-circle">
+            <div class="overflow-hidden">
+              <span class="text-white fw-bold d-block text-truncate small">Tú (Admin)</span>
+              <small class="text-warning d-block micro-text">Programador Fullstack</small>
+            </div>
+          </div>
+
+          <div class="team-member-item d-flex align-items-center gap-2 p-2 rounded-3 mb-2">
+            <img src="../Assets/perfil.jpg" alt="Perfil" class="team-avatar-sm rounded-circle">
+            <div class="overflow-hidden">
+              <span class="text-white fw-bold d-block text-truncate small">Ejemplo_01</span>
+              <small class="text-info d-block micro-text">Programador Frontend</small>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+  </div>
+
+  <!-- MODAL NUEVA TAREA -->
+  <div class="modal fade" id="modalNuevaTarea" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content ajustes-modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title"><i class="bi bi-plus-circle me-2"></i>Crear Tarea en Tablero</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="formNuevaTarea">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Título de la Tarea</label>
+              <input type="text" class="form-control auth-input" id="tituloTarea" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Rol Requerido</label>
+              <select class="form-select role-select-input" id="rolTareaRequired" required>
+                <option value="" disabled selected>Selecciona un rol...</option>
+                <option value="Programador Frontend">Programador Frontend</option>
+                <option value="Programador Backend">Programador Backend</option>
+                <option value="Diseñador">Diseñador</option>
+                <option value="Documentador">Documentador</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="submit" class="btn btn-outline-light btn-glow rounded-pill">Agregar Tarea</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ASIGNAR MANUAL -->
+  <div class="modal fade" id="modalAsignarManual" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content ajustes-modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title"><i class="bi bi-person-check-fill me-2"></i>Asignar Tarea Manualmente</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <label class="form-label">Selecciona el Integrante</label>
+          <select class="form-select role-select-input" id="selectMiembroManual">
+            <option value="Ejemplo_01">Ejemplo_01 (Frontend)</option>
+            <option value="Luis">Luis (Documentador)</option>
+          </select>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-light btn-glow rounded-pill" id="btnConfirmarAsignacionManual">Asignar Tarea</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL AÑADIR MIEMBRO -->
+  <div class="modal fade" id="modalAddMiembro" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content ajustes-modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title"><i class="bi bi-person-plus-fill me-2"></i>Añadir Miembro al Equipo</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <label class="form-label">Nombre de usuario</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control auth-input" id="inputBuscarModal" placeholder="Ej. Ejemplo_01">
+            <button class="btn btn-outline-light btn-glow" id="btnBuscarModal">Buscar</button>
+          </div>
+          <div id="resultadoBusquedaModal" class="d-none p-3 bg-dark rounded-3 border border-secondary">
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="text-white fw-bold" id="nombreUsuarioEncontrado">Ejemplo_02</span>
+              <button class="btn btn-sm btn-warning text-dark fw-bold rounded-pill" id="btnConfirmarAddMiembro">Añadir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../Js/Pantallas.js"></script>
+  <script src="../Js/DetalleProyecto.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+/* Capa que cubre toda la pantalla mientras carga */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, var(--gt-blue-dark) 0%, var(--gt-blue) 55%, var(--gt-gray-dark) 100%);
+  transition: opacity 0.5s ease;
+}
+
+/* Clase que agrega Pantallas.js para ocultar el loader con fade */
+.page-loader.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Engranaje grande girando dentro del loader */
+.loader-gear {
+  font-size: 6rem;
+  color: var(--gt-white);
+  animation: spin 2s linear infinite;
+}
