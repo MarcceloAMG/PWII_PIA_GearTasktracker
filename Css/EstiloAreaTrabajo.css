@@ -4,7 +4,6 @@
   background-color: var(--gt-orange-gray); 
 }
 
-
 .sidebar {
   position: relative; 
   width: 280px;
@@ -101,15 +100,6 @@
   display: none;
 }
 
-
-.sidebar-gear {
-  --gear-color: var(--gt-blue-light);
-}
-
-.sidebar.collapsed .sidebar-gear {
-  display: none; 
-}
-
 .sidebar-footer {
   margin-top: auto; 
   position: relative;
@@ -125,17 +115,6 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-}
-
-.sidebar-footer-gear {
-  font-size: 1.3rem;
-  flex-shrink: 0;
-  color: var(--gt-blue-light);
-  animation: spin 8s linear infinite;
-}
-
-.sidebar.collapsed .sidebar-footer-gear {
-  display: none;
 }
 
 /* Botones del pie (Ajustes y Cerrar sesión) */
@@ -216,11 +195,6 @@
   color: var(--gt-gray-dark);
 }
 
-/* Engranaje grande en la esquina inferior derecha */
-.main-content-gear {
-  --gear-color: rgba(13, 36, 56, 0.5);
-}
-
 /*   NUEVO: MODAL DE AJUSTES */
 .ajustes-modal-content {
   position: relative;
@@ -243,10 +217,6 @@
 .ajustes-warning {
   color: var(--gt-yellow-glow);
   font-size: 0.85rem;
-}
-
-.ajustes-modal-gear {
-  --gear-color: rgba(238, 242, 245, 0.08);
 }
 
 /* NUEVO: MODAL DE VERSIÓN (Básica / Premium)*/

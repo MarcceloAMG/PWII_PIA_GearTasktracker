@@ -1,0 +1,115 @@
+.custom-alert-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); 
+    display: flex;
+    align-items: flex-start;    
+    justify-content: center;    
+    padding-top: 40px;        
+    z-index: 99999;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.custom-alert-box {
+    padding: 16px 22px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    font-family: system-ui, -apple-system, sans-serif;
+    animation: slideDown 0.2s ease-in-out;
+}
+
+/* --- VARIANTE 1: Alerta del Sistema --- */
+.custom-alert-box.default {
+    background-color: rgba(15, 32, 67, 0.8); 
+    backdrop-filter: blur(4px);
+    max-width: 380px;
+    width: 90%;
+    color: #ffffff;
+}
+
+.custom-alert-box.default .custom-alert-title {
+    color: #ffffff;
+}
+
+.custom-alert-box.default .custom-alert-message {
+    color: #e2e8f0;
+}
+
+.custom-alert-box.default .custom-alert-btn {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+.custom-alert-box.default .custom-alert-btn:hover {
+    background-color: #1d4ed8;
+}
+
+/* --- VARIANTE 2: Registro Exitoso --- */
+.custom-alert-box.success {
+    background-color: rgba(34, 197, 94, 0.8); 
+    backdrop-filter: blur(4px);
+    max-width: 280px;
+    width: auto;
+    padding: 14px 18px;
+    color: #ffffff;
+}
+
+.custom-alert-box.success .custom-alert-title {
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.custom-alert-box.success .custom-alert-message {
+    color: #f0fdf4;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+}
+
+.custom-alert-box.success .custom-alert-btn {
+    background-color: #ffffff;
+    color: #15803d;
+    font-weight: 700;
+    padding: 5px 14px;
+    font-size: 0.8rem;
+}
+
+.custom-alert-box.success .custom-alert-btn:hover {
+    background-color: #f0fdf4;
+}
+
+.custom-alert-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.custom-alert-message {
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+    line-height: 1.4;
+}
+
+.custom-alert-btn {
+    border: none;
+    padding: 8px 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
