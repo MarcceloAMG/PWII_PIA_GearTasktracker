@@ -1,0 +1,64 @@
+.auth-card {
+  z-index: 4;
+  background-color: rgb(27, 31, 36) !important;
+  border: 1px solid rgba(238, 242, 245, 0.15);
+  border-radius: 1rem;
+  color: var(--gt-white);
+  animation: fade-in-up 0.6s ease-out;
+}
+
+.auth-icon {
+  font-size: 2.5rem;
+  color: var(--gt-blue-light);
+  animation: spin 12s linear infinite;
+  display: inline-block;
+}
+
+.auth-title {
+  font-weight: 700;
+}
+
+.auth-input {
+  background-color: rgba(238, 242, 245, 0.08);
+  border: 1px solid rgba(238, 242, 245, 0.25);
+  color: var(--gt-white);
+}
+
+.auth-input:focus {
+  background-color: rgba(238, 242, 245, 0.12);
+  border-color: var(--gt-blue-light);
+  color: var(--gt-white);
+  box-shadow: 0 0 0 0.2rem rgba(61, 122, 181, 0.35);
+}
+
+.auth-input::placeholder {
+  color: rgba(238, 242, 245, 0.5);
+}
+
+/* botón del "ojo" para mostrar/ocultar contraseña, pegado al input */
+.auth-input-group .auth-input {
+  border-right: none;
+}
+
+.auth-toggle-pass {
+  background-color: rgba(238, 242, 245, 0.08);
+  border: 1px solid rgba(238, 242, 245, 0.25);
+  border-left: none;
+  color: var(--gt-white);
+}
+
+.auth-toggle-pass:hover,
+.auth-toggle-pass:focus {
+  background-color: rgba(238, 242, 245, 0.08);
+  color: var(--gt-yellow-glow);
+  box-shadow: none;
+}
+
+.auth-link {
+  color: var(--gt-blue-light);
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  color: var(--gt-yellow-glow);
+}
