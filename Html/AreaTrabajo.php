@@ -140,7 +140,7 @@ session_start();
           <a href="chats.html" class="topbar-icon-btn" title="Ir a chats"><i class="bi bi-chat-dots-fill"></i></a>
           <a href="Notificaciones.html" class="topbar-icon-btn" title="Ver notificaciones"><i class="bi bi-bell-fill"></i></a>
           <a href="Productividad.php" class="topbar-icon-btn" title="Ver gráfica de productividad"><i class="bi bi-graph-up-arrow"></i></a>
-          <a href="Reportes.html" class="topbar-icon-btn" title="Ver reportes"><i class="bi bi-file-earmark-text-fill"></i></a>
+          <a href="Reportes.php" class="topbar-icon-btn" title="Ver reportes"><i class="bi bi-file-earmark-text-fill"></i></a>
           <!-- NUEVO: el diamante ahora abre #modalSuscripcion -->
           <button type="button" class="topbar-icon-btn" data-bs-toggle="modal" data-bs-target="#modalSuscripcion" title="Cambiar plan"><i class="bi bi-gem"></i></button>
         </div>

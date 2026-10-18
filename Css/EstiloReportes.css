@@ -34,3 +34,55 @@
   color: var(--gt-yellow-glow);
   border-left: 3px solid var(--gt-yellow-glow);
 }
+
+/* CATEGORÍAS DE REPORTE (un color por categoría) */
+.cat-tiempo       { --cat-color: #dc3545; } 
+.cat-material     { --cat-color: #ffc107; } 
+.cat-comunicacion { --cat-color: #198754; } 
+.cat-bugs         { --cat-color: #000000; } 
+.cat-graves       { --cat-color: #6f42c1; } 
+
+.badge-cat {
+  background-color: var(--cat-color);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.badge-cat.cat-material { color: #000000; }
+.badge-cat.cat-bugs { border: 1px solid rgba(238, 242, 245, 0.55); }
+
+.cat-icon { color: var(--cat-color); }
+
+.cat-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  background-color: var(--gt-white);
+  flex-shrink: 0;
+}
+
+.cat-chip i {
+  color: var(--cat-color, #6c757d);
+  font-size: 0.95rem;
+}
+
+#contenedorFiltrosIncidencia .month-item { gap: 0.5rem; }
+
+.reporte-descripcion {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border-left: 3px solid var(--cat-color);
+  padding-left: 0.75rem;
+}
+
+.reloj-badge {
+  background-color: var(--gt-blue-dark);
+  color: var(--gt-white);
+  border: 1px solid rgba(238, 242, 245, 0.2);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.8rem;
+}
