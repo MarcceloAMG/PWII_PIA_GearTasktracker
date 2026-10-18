@@ -99,12 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const switchVersion = document.getElementById('switchVersion');
-  if (switchVersion) {
-    switchVersion.addEventListener('change', () => {
-      window.location.reload();
-    });
-  }
+  // NUEVO: se eliminó el switch de versión; ahora la lógica del plan vive en modal-suscripcion.php
 
   // --- CREACIÓN DE PROYECTO Y MIEMBROS ---
   const btnBuscarUsuario = document.getElementById('btnBuscarUsuario');

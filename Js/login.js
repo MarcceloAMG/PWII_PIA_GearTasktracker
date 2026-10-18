@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!esValido) return;
 
       alertaExito("¡Inicio de sesión exitoso!", () => {
-        navegarConLoader('AreaTrabajo.html');
+        navegarConLoader('AreaTrabajo.php');
       });
     });
   }

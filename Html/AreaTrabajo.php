@@ -1,3 +1,9 @@
+<?php
+// NUEVO: la sesión se inicia aquí, en la PRIMERA línea de la página (antes de cualquier HTML).
+// Backend la usará para saber qué usuario está logueado (modal-suscripcion.php lee $_SESSION).
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -123,36 +129,9 @@
       </div>
     </div>
 
-    <!-- Modal Versión -->
-    <div class="modal fade" id="modalVersion" tabindex="-1" aria-labelledby="modalVersionLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content ajustes-modal-content">
-          <div class="modal-header border-0">
-            <h5 class="modal-title" id="modalVersionLabel"><i class="bi bi-gem me-2"></i>Plan de la cuenta</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-          </div>
-          <div class="modal-body">
-            <div class="version-card mb-4">
-              <div class="version-card-row">
-                <span>•••• •••• •••• 4242</span>
-                <i class="bi bi-credit-card-2-front-fill"></i>
-              </div>
-              <div class="version-card-row version-card-small">
-                <span>NOMBRE DEL TITULAR</span>
-                <span>MM/AA</span>
-              </div>
-            </div>
-            <div class="d-flex align-items-center justify-content-between version-switch-row">
-              <span>Básica</span>
-              <div class="form-check form-switch mb-0">
-                <input class="form-check-input" type="checkbox" role="switch" id="switchVersion">
-              </div>
-              <span>Premium</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- NUEVO: modal de suscripción reutilizable (reemplaza al antiguo modal de versión).
+         Esta página debe ser .php para que el include se ejecute. -->
+    <?php include '../PHP/modal-suscripcion.php'; ?>
 
     <div class="content-column">
 
@@ -160,9 +139,10 @@
         <div class="topbar-icons">
           <a href="chats.html" class="topbar-icon-btn" title="Ir a chats"><i class="bi bi-chat-dots-fill"></i></a>
           <a href="Notificaciones.html" class="topbar-icon-btn" title="Ver notificaciones"><i class="bi bi-bell-fill"></i></a>
-          <a href="Productividad.html" class="topbar-icon-btn" title="Ver gráfica de productividad"><i class="bi bi-graph-up-arrow"></i></a>
+          <a href="Productividad.php" class="topbar-icon-btn" title="Ver gráfica de productividad"><i class="bi bi-graph-up-arrow"></i></a>
           <a href="Reportes.html" class="topbar-icon-btn" title="Ver reportes"><i class="bi bi-file-earmark-text-fill"></i></a>
-          <button type="button" class="topbar-icon-btn" data-bs-toggle="modal" data-bs-target="#modalVersion" title="Cambiar plan"><i class="bi bi-gem"></i></button>
+          <!-- NUEVO: el diamante ahora abre #modalSuscripcion -->
+          <button type="button" class="topbar-icon-btn" data-bs-toggle="modal" data-bs-target="#modalSuscripcion" title="Cambiar plan"><i class="bi bi-gem"></i></button>
         </div>
       </header>
 

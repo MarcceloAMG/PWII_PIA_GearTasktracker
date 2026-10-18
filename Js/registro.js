@@ -241,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const procederExito = () => {
         alertaExito("¡Registro exitoso!", () => {
-          navegarConLoader('AreaTrabajo.html');
+          navegarConLoader('AreaTrabajo.php');
         });
       };
 
