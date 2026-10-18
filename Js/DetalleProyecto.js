@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const tablaTareasProyecto = document.getElementById('tablaTareasProyecto');
   const btnAutoAsignar = document.getElementById('btnAutoAsignar');
   const formNuevaTarea = document.getElementById('formNuevaTarea');
+  const inputTituloTarea = document.getElementById('tituloTarea');
+  const selectRolTarea = document.getElementById('rolTareaRequired');
+
   const btnBuscarModal = document.getElementById('btnBuscarModal');
   const resultadoBusquedaModal = document.getElementById('resultadoBusquedaModal');
   const btnConfirmarAddMiembro = document.getElementById('btnConfirmarAddMiembro');
@@ -13,7 +16,54 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('lblTituloProyecto').textContent = `Proyecto: ${projectId}`;
   }
 
-  //Asignación voluntaria y excepciones del limbo
+  const mostrarErrorCampo = (element, mensaje) => {
+    borrarErrorCampo(element);
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error-message';
+    errorDiv.innerText = mensaje;
+    element.closest('.mb-3, .mb-4').appendChild(errorDiv);
+  };
+
+  const borrarErrorCampo = (element) => {
+    const contenedor = element.closest('.mb-3, .mb-4');
+    if (!contenedor) return;
+    const errorExistente = contenedor.querySelector('.field-error-message');
+    if (errorExistente) {
+      errorExistente.remove();
+    }
+  };
+
+  // --- VALIDACIÓN DEL FORMULARIO DE NUEVA TAREA ---
+  if (inputTituloTarea) {
+    inputTituloTarea.addEventListener('input', () => {
+      const valor = inputTituloTarea.value.trim();
+      // Regla: Debe iniciar con al menos una letra y solo después puede contener letras, números y espacios
+      const empiezaConLetra = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ]/.test(valor);
+      const formatoValido = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ][a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s]*$/.test(valor);
+
+      if (!valor) {
+        mostrarErrorCampo(inputTituloTarea, 'No pueden dejarse los campos vacíos');
+      } else if (!empiezaConLetra || !formatoValido) {
+        mostrarErrorCampo(inputTituloTarea, 'El título debe comenzar con letras antes de usar números');
+      } else if (valor.length < 5) {
+        mostrarErrorCampo(inputTituloTarea, 'El título debe tener al menos 5 caracteres');
+      } else {
+        borrarErrorCampo(inputTituloTarea);
+      }
+    });
+  }
+
+  if (selectRolTarea) {
+    selectRolTarea.addEventListener('change', () => {
+      if (selectRolTarea.value && selectRolTarea.value !== 'Selecciona un rol...') {
+        borrarErrorCampo(selectRolTarea);
+      } else {
+        mostrarErrorCampo(selectRolTarea, 'Selecciona una opción');
+      }
+    });
+  }
+
+  // --- ASIGNACIÓN VOLUNTARIA Y EXCEPCIONES ---
   tablaTareasProyecto.addEventListener('click', (e) => {
     if (e.target.classList.contains('btn-tomar')) {
       const tr = e.target.closest('tr');
@@ -36,29 +86,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Asignación Automática Inteligente
-  btnAutoAsignar.addEventListener('click', () => {
-    const filasSinAsignar = tablaTareasProyecto.querySelectorAll('tr');
-    
-    filasSinAsignar.forEach(tr => {
-      const colAsignado = tr.querySelector('.col-asignado');
-      if (colAsignado && colAsignado.textContent.includes('Sin asignar')) {
-        colAsignado.innerHTML = `<span class="text-info fw-bold">Ejemplo_01</span>`;
-        const badgeEstado = tr.querySelector('.badge-estado');
-        badgeEstado.textContent = 'Asignada (Auto)';
-        badgeEstado.className = 'badge bg-info text-dark badge-estado';
-      }
+  // --- ASIGNACIÓN AUTOMÁTICA INTELIGENTE ---
+  if (btnAutoAsignar) {
+    btnAutoAsignar.addEventListener('click', () => {
+      const filasSinAsignar = tablaTareasProyecto.querySelectorAll('tr');
+      
+      filasSinAsignar.forEach(tr => {
+        const colAsignado = tr.querySelector('.col-asignado');
+        if (colAsignado && colAsignado.textContent.includes('Sin asignar')) {
+          colAsignado.innerHTML = `<span class="text-info fw-bold">Ejemplo_01</span>`;
+          const badgeEstado = tr.querySelector('.badge-estado');
+          badgeEstado.textContent = 'Asignada (Auto)';
+          badgeEstado.className = 'badge bg-info text-dark badge-estado';
+        }
+      });
+
+      alert('Asignación automática inteligente completada.');
     });
+  }
 
-    alert('Asignación automática inteligente completada.');
-  });
-
-  // Crear Nueva Tarea
+  // --- CREAR NUEVA TAREA AL ENVIAR FORMULARIO ---
   if (formNuevaTarea) {
     formNuevaTarea.addEventListener('submit', (e) => {
       e.preventDefault();
-      const titulo = document.getElementById('tituloTarea').value;
-      const rol = document.getElementById('rolTareaRequired').value;
+      let esValido = true;
+
+      const titulo = inputTituloTarea.value.trim();
+      const rol = selectRolTarea.value;
+
+      const empiezaConLetra = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ]/.test(titulo);
+      const formatoValido = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ][a-zA-ZÁÉÍÓÚáéíóúÑñ0-9\s]*$/.test(titulo);
+
+      if (!titulo) {
+        mostrarErrorCampo(inputTituloTarea, 'No pueden dejarse los campos vacíos');
+        esValido = false;
+      } else if (!empiezaConLetra || !formatoValido) {
+        mostrarErrorCampo(inputTituloTarea, 'El título debe comenzar con letras antes de usar números');
+        esValido = false;
+      } else if (titulo.length < 5) {
+        mostrarErrorCampo(inputTituloTarea, 'El título debe tener al menos 5 caracteres');
+        esValido = false;
+      }
+
+      if (!rol || rol === 'Selecciona un rol...') {
+        mostrarErrorCampo(selectRolTarea, 'Selecciona una opción');
+        esValido = false;
+      }
+
+      if (!esValido) return;
 
       const tr = document.createElement('tr');
       tr.innerHTML = `
@@ -78,12 +153,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const modalEl = document.getElementById('modalNuevaTarea');
       const modal = bootstrap.Modal.getInstance(modalEl);
-      modal.hide();
+      if (modal) modal.hide();
       formNuevaTarea.reset();
+      borrarErrorCampo(inputTituloTarea);
+      borrarErrorCampo(selectRolTarea);
     });
   }
 
-  // Búsqueda y añádir miembros
+  // --- BÚSQUEDA Y AÑADIR MIEMBROS ---
   if (btnBuscarModal) {
     btnBuscarModal.addEventListener('click', () => {
       const query = document.getElementById('inputBuscarModal').value.trim();
@@ -109,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const modalEl = document.getElementById('modalAddMiembro');
       const modal = bootstrap.Modal.getInstance(modalEl);
-      modal.hide();
+      if (modal) modal.hide();
       resultadoBusquedaModal.classList.add('d-none');
       document.getElementById('inputBuscarModal').value = '';
     });
