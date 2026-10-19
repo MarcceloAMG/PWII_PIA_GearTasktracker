@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let proyecto = null; // workspace con sus integrantes
   let tareas = [];
   let tareaPorAsignar = null; // id de la tarea que se está asignando manualmente
+  let tareaPorReportar = null; // id de la tarea que se está reportando
 
   const ESTADOS = {
     disponible: ['Disponible', 'bg-secondary'],
@@ -101,6 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (esMia && ['asignada', 'pendiente_excepcion', 'en_proceso'].includes(tarea.estado)) {
       botones.push(crearBoton('Completar', 'btn-success ms-1', 'completar', tarea._id));
+    }
+    if (esMia && ['asignada', 'pendiente_excepcion', 'en_proceso'].includes(tarea.estado)) {
+      botones.push(crearBoton('Reportar', 'btn-outline-danger ms-1', 'reportar', tarea._id));
     }
     if (esAdmin() && tarea.estado !== 'completada') {
       botones.push(crearBoton('Cancelar', 'btn-outline-danger ms-1', 'cancelar', tarea._id));
@@ -208,6 +212,12 @@ document.addEventListener('DOMContentLoaded', () => {
       new bootstrap.Modal(document.getElementById('modalAsignarManual')).show();
       return;
     }
+    if (accion === 'reportar') {
+      tareaPorReportar = id;
+      mostrarError(document.getElementById('mensajeReportar'), '');
+      new bootstrap.Modal(document.getElementById('modalReportar')).show();
+      return;
+    }
     if (accion === 'cancelar' && !window.confirm('¿Cancelar esta tarea?')) return;
 
     const rutas = {
@@ -237,6 +247,23 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       cerrarModal('modalAsignarManual');
       document.getElementById('fechaLimiteManual').value = '';
+      await cargarTareas();
+    } catch (error) {
+      mostrarError(caja, error.message);
+    }
+  });
+
+  // ---- Reportar incumplimiento ---------------------------------------------------
+
+  document.getElementById('btnConfirmarReporte').addEventListener('click', async () => {
+    const caja = document.getElementById('mensajeReportar');
+    try {
+      await GearTask.api('POST', `/tareas/${tareaPorReportar}/reportar`, {
+        motivo: document.getElementById('motivoReporte').value,
+        descripcion: document.getElementById('descripcionReporte').value.trim(),
+      });
+      cerrarModal('modalReportar');
+      document.getElementById('descripcionReporte').value = '';
       await cargarTareas();
     } catch (error) {
       mostrarError(caja, error.message);

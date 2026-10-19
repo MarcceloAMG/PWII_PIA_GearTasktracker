@@ -1,4 +1,5 @@
 const { body, query } = require('express-validator');
+const { PLANES } = require('../config/constantes');
 
 const validarCambioUsuario = [
   body('usuario')
@@ -36,4 +37,8 @@ const validarBusqueda = [
     .withMessage('El teléfono debe tener 10 dígitos'),
 ];
 
-module.exports = { validarCambioUsuario, validarCambioPassword, validarBusqueda };
+const validarCambioPlan = [
+  body('plan').isIn(PLANES).withMessage(`El plan debe ser: ${PLANES.join(' o ')}`),
+];
+
+module.exports = { validarCambioUsuario, validarCambioPassword, validarBusqueda, validarCambioPlan };

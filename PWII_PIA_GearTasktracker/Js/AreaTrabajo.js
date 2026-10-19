@@ -114,12 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const switchVersion = document.getElementById('switchVersion');
-  if (switchVersion) {
-    switchVersion.addEventListener('change', () => {
-      window.location.reload();
-    });
-  }
+  // PLAN: el interruptor de "Plan de la cuenta" cambia el plan real (básico <-> Premium)
+  GearTask.enlazarSwitchPlan(() => {});
 
   // PROYECTOS: se listan desde la API; cada tarjeta lleva al detalle con el id del workspace
   const btnBuscarUsuario = document.getElementById('btnBuscarUsuario');

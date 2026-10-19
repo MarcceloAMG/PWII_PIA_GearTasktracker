@@ -104,7 +104,39 @@
   const urlFoto = (foto) =>
     foto && foto.startsWith('/uploads/') ? `${ORIGEN}${foto}` : '../Assets/perfil.jpg';
 
+  // Enlaza el interruptor Básica/Premium (#switchVersion) con el plan real de la cuenta.
+  // alCambiar(plan) se llama al cargar la pantalla y cada vez que el plan cambia.
+  async function enlazarSwitchPlan(alCambiar) {
+    const interruptor = document.getElementById('switchVersion');
+    let usuario = obtenerUsuario();
+
+    try {
+      usuario = await api('GET', '/usuarios/me');
+      guardarSesion(obtenerToken(), usuario);
+    } catch (error) {
+      console.warn('No se pudo leer el plan:', error.message);
+    }
+
+    const plan = usuario ? usuario.plan : 'basico';
+    if (interruptor) interruptor.checked = plan === 'premium';
+    alCambiar(plan);
+
+    if (!interruptor) return;
+    interruptor.addEventListener('change', async () => {
+      const deseado = interruptor.checked ? 'premium' : 'basico';
+      try {
+        const actualizado = await api('PATCH', '/usuarios/me/plan', { plan: deseado });
+        guardarSesion(obtenerToken(), actualizado);
+        alCambiar(actualizado.plan);
+      } catch (error) {
+        interruptor.checked = !interruptor.checked; // se deshace si el servidor lo rechaza
+        window.alert(error.message);
+      }
+    });
+  }
+
   window.GearTask = {
+    enlazarSwitchPlan,
     api,
     guardarSesion,
     obtenerToken,

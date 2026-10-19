@@ -146,6 +146,34 @@
     </div>
   </div>
 
+  <!-- MODAL REPORTAR INCUMPLIMIENTO -->
+  <div class="modal fade" id="modalReportar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content ajustes-modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title"><i class="bi bi-exclamation-octagon-fill me-2"></i>Reportar que no puedo cumplir</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger py-2 small d-none" id="mensajeReportar" role="alert"></div>
+          <p class="text-white-50 small">La tarea quedará libre otra vez y el administrador recibirá tu reporte.</p>
+          <label class="form-label">Motivo</label>
+          <select class="form-select role-select-input mb-3" id="motivoReporte">
+            <option value="FALTA DE TIEMPO">FALTA DE TIEMPO</option>
+            <option value="MATERIAL INSUFICIENTE">MATERIAL INSUFICIENTE</option>
+            <option value="ENFERMEDAD">ENFERMEDAD</option>
+            <option value="OTRO">OTRO</option>
+          </select>
+          <label class="form-label">¿Qué pasó?</label>
+          <textarea class="form-control auth-input" id="descripcionReporte" rows="3" maxlength="500"></textarea>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-light btn-glow rounded-pill" id="btnConfirmarReporte">Enviar reporte</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL AÑADIR MIEMBRO -->
   <div class="modal fade" id="modalAddMiembro" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

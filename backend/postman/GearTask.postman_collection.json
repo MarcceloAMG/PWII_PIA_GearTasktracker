@@ -3591,6 +3591,1709 @@
           ]
         }
       ]
+    },
+    {
+      "name": "Plan, reportes, productividad y notificaciones",
+      "item": [
+        {
+          "name": "86. Productividad del mes actual (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/productividad",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "productividad"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('Es el mes actual y trae un valor por día', () => {",
+                  "  pm.expect(d.esMesActual).to.eql(true);",
+                  "  pm.expect(d.porDia).to.have.lengthOf(new Date(d.anio, d.mes, 0).getDate());",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "87. Productividad de otro mes con plan básico (403)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/productividad?anio=2020&mes=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "productividad"
+              ],
+              "query": [
+                {
+                  "key": "anio",
+                  "value": "2020"
+                },
+                {
+                  "key": "mes",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "El historial de meses anteriores es solo Premium."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "88. Productividad con mes inválido (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/productividad?mes=13",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "productividad"
+              ],
+              "query": [
+                {
+                  "key": "mes",
+                  "value": "13"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "89. Reportar con un motivo inválido (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tareas/{{tareaDataId}}/reportar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tareas",
+                "{{tareaDataId}}",
+                "reportar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"FLOJERA\",\n  \"descripcion\": \"No quise\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "90. Reportar una tarea que no es mía (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tareas/{{tareaDataId}}/reportar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tareas",
+                "{{tareaDataId}}",
+                "reportar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"FALTA DE TIEMPO\",\n  \"descripcion\": \"No es mía\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenOtro}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "91. Reportar mi tarea asignada (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tareas/{{tareaDataId}}/reportar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tareas",
+                "{{tareaDataId}}",
+                "reportar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"FALTA DE TIEMPO\",\n  \"descripcion\": \"Se me juntó con otros entregables\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 201', () => pm.response.to.have.status(201));",
+                  "pm.environment.set('reporteId', pm.response.json().data._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "92. La tarea reportada vuelve a quedar disponible (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/workspaces/{{tareasWsId}}/tareas?estado=disponible",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "workspaces",
+                "{{tareasWsId}}",
+                "tareas"
+              ],
+              "query": [
+                {
+                  "key": "estado",
+                  "value": "disponible"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Está disponible y sin responsable', () => {",
+                  "  const t = pm.response.json().data.find((x) => x._id === pm.environment.get('tareaDataId'));",
+                  "  pm.expect(t).to.exist;",
+                  "  pm.expect(t.asignadoA).to.eql(null);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "93. Reportar otra vez la misma tarea (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/tareas/{{tareaDataId}}/reportar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "tareas",
+                "{{tareaDataId}}",
+                "reportar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"motivo\": \"OTRO\",\n  \"descripcion\": \"Ya no es mía\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "94. Lista de reportes del administrador (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reportes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Incluye el reporte', () => pm.expect(pm.response.json().data.map((r) => r._id)).to.include(pm.environment.get('reporteId')));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "95. Reportes de un proyecto que no administro (403)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reportes?workspace={{tareasWsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes"
+              ],
+              "query": [
+                {
+                  "key": "workspace",
+                  "value": "{{tareasWsId}}"
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenOtro}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "96. Analítica de incidencias con plan básico (403)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/estadisticas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "estadisticas"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "97. Cambiar a un plan inexistente (400)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/me/plan",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "me",
+                "plan"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plan\": \"oro\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "98. Cambiar a Premium (200)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/me/plan",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "me",
+                "plan"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plan\": \"premium\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Plan premium', () => pm.expect(pm.response.json().data.plan).to.eql('premium'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "99. Analítica de incidencias con Premium (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reportes/estadisticas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reportes",
+                "estadisticas"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('Trae los 4 motivos con 12 meses', () => {",
+                  "  pm.expect(Object.keys(d.motivos)).to.have.lengthOf(4);",
+                  "  pm.expect(d.motivos['FALTA DE TIEMPO']).to.have.lengthOf(12);",
+                  "});",
+                  "pm.test('Cuenta el reporte del mes actual', () => pm.expect(d.motivos['FALTA DE TIEMPO'][new Date().getMonth()]).to.be.at.least(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "100. Productividad histórica con Premium (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/productividad?anio=2020&mes=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "productividad"
+              ],
+              "query": [
+                {
+                  "key": "anio",
+                  "value": "2020"
+                },
+                {
+                  "key": "mes",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Mes de 31 días sin tareas', () => {",
+                  "  const d = pm.response.json().data;",
+                  "  pm.expect(d.porDia).to.have.lengthOf(31);",
+                  "  pm.expect(d.completadas).to.eql(0);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "101. Cambiar el límite general del equipo con Premium (200)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/workspaces/{{tareasWsId}}/limite",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "workspaces",
+                "{{tareasWsId}}",
+                "limite"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"limiteGeneral\": 5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Límite 5', () => pm.expect(pm.response.json().data.limiteGeneral).to.eql(5));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "102. Límite general fuera de rango (400)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/workspaces/{{tareasWsId}}/limite",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "workspaces",
+                "{{tareasWsId}}",
+                "limite"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"limiteGeneral\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "103. Límite individual con Premium (200)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/workspaces/{{tareasWsId}}/miembros/{{yoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "workspaces",
+                "{{tareasWsId}}",
+                "miembros",
+                "{{yoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"limiteTareas\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Límite individual 1', () => {",
+                  "  const m = pm.response.json().data.miembros.find((x) => x.usuario._id === pm.environment.get('yoId'));",
+                  "  pm.expect(m.limiteTareas).to.eql(1);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "104. Volver al plan básico (200)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/me/plan",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "me",
+                "plan"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"plan\": \"basico\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Plan básico', () => pm.expect(pm.response.json().data.plan).to.eql('basico'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "105. Al bajar a básico los límites regresan a 3 (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/workspaces/{{tareasWsId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "workspaces",
+                "{{tareasWsId}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "const w = pm.response.json().data;",
+                  "pm.test('Límite general 3', () => pm.expect(w.limiteGeneral).to.eql(3));",
+                  "pm.test('Sin límites individuales', () => w.miembros.forEach((m) => pm.expect(m.limiteTareas).to.eql(null)));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "106. Listar mis notificaciones (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notificaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notificaciones"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "const lista = pm.response.json().data;",
+                  "pm.test('Tiene notificaciones (limbo y reporte)', () => pm.expect(lista.length).to.be.at.least(2));",
+                  "pm.environment.set('notificacionId', lista[0]._id);",
+                  "pm.environment.set('notificacionMensaje', lista[0].mensaje);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "107. Filtrar solo las no leídas (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notificaciones?leida=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notificaciones"
+              ],
+              "query": [
+                {
+                  "key": "leida",
+                  "value": "false"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Todas sin leer', () => pm.response.json().data.forEach((n) => pm.expect(n.leida).to.eql(false)));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "108. Filtro de notificaciones inválido (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notificaciones?leida=quizas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notificaciones"
+              ],
+              "query": [
+                {
+                  "key": "leida",
+                  "value": "quizas"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "109. Marcar una notificación como leída (200)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notificaciones/{{notificacionId}}/leida",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notificaciones",
+                "{{notificacionId}}",
+                "leida"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "const n = pm.response.json().data;",
+                  "pm.test('Quedó leída y su contenido no cambió', () => {",
+                  "  pm.expect(n.leida).to.eql(true);",
+                  "  pm.expect(n.mensaje).to.eql(pm.environment.get('notificacionMensaje'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "110. Marcar leída una notificación ajena (404)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notificaciones/{{notificacionId}}/leida",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notificaciones",
+                "{{notificacionId}}",
+                "leida"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenOtro}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "111. Marcar todas como leídas (200)",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notificaciones/leidas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notificaciones",
+                "leidas"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "112. Ya no quedan notificaciones sin leer (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notificaciones?leida=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notificaciones"
+              ],
+              "query": [
+                {
+                  "key": "leida",
+                  "value": "false"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Lista vacía', () => pm.expect(pm.response.json().data).to.have.lengthOf(0));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "113. Notificaciones sin sesión (401)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notificaciones",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notificaciones"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chats",
+      "item": [
+        {
+          "name": "114. Mis conversaciones (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Es una lista', () => pm.expect(pm.response.json().data).to.be.an('array'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "115. Enviar un mensaje (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/chats/{{otroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "{{otroId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"Hola, ¿cómo va el proyecto?\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 201', () => pm.response.to.have.status(201));",
+                  "const m = pm.response.json().data;",
+                  "pm.test('Guarda el texto y queda sin leer', () => {",
+                  "  pm.expect(m.texto).to.eql('Hola, ¿cómo va el proyecto?');",
+                  "  pm.expect(m.leido).to.eql(false);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "116. Enviar un mensaje vacío (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/chats/{{otroId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "{{otroId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"   \"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "117. Escribirme a mí mismo (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/chats/{{yoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "{{yoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"Hola yo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "118. Escribir a un usuario que no existe (404)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/chats/64b000000000000000000000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "64b000000000000000000000"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"¿Hay alguien?\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "119. Escribir con un id mal formado (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/chats/abc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "abc"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"Hola\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "120. El otro usuario responde (201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/chats/{{yoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "{{yoId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"Todo bien, ya casi termino mis tareas\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenOtro}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "121. El otro ve el chat con 1 mensaje sin leer (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenOtro}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Aparece la conversación con mensajes sin leer', () => {",
+                  "  const c = pm.response.json().data.find((x) => x.usuario._id === pm.environment.get('yoId'));",
+                  "  pm.expect(c).to.exist;",
+                  "  pm.expect(c.sinLeer).to.be.at.least(1);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "122. Total de mensajes sin leer (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chats/sin-leer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "sin-leer"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenOtro}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Al menos 1', () => pm.expect(pm.response.json().data.total).to.be.at.least(1));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "123. El otro abre la conversación (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chats/{{yoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "{{yoId}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenOtro}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('Trae los dos mensajes en orden', () => {",
+                  "  pm.expect(d.mensajes).to.have.lengthOf(2);",
+                  "  pm.expect(d.mensajes[0].texto).to.include('Hola');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "124. Al abrir el chat ya no hay sin leer (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chats/sin-leer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "sin-leer"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{tokenOtro}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Cero', () => pm.expect(pm.response.json().data.total).to.eql(0));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "125. Pedir solo mensajes posteriores a una fecha (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chats/{{otroId}}?despues=2099-01-01T00:00:00.000Z",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "{{otroId}}"
+              ],
+              "query": [
+                {
+                  "key": "despues",
+                  "value": "2099-01-01T00:00:00.000Z"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Ninguno más nuevo', () => pm.expect(pm.response.json().data.mensajes).to.have.lengthOf(0));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "126. Parámetro despues inválido (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chats/{{otroId}}?despues=ayer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats",
+                "{{otroId}}"
+              ],
+              "query": [
+                {
+                  "key": "despues",
+                  "value": "ayer"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "127. Mis conversaciones incluyen al otro usuario (200)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Con su último mensaje', () => {",
+                  "  const c = pm.response.json().data.find((x) => x.usuario._id === pm.environment.get('otroId'));",
+                  "  pm.expect(c).to.exist;",
+                  "  pm.expect(c.ultimoMensaje).to.eql('Todo bien, ya casi termino mis tareas');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "128. Chats sin sesión (401)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chats"
+              ]
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Responde 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
