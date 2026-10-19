@@ -16,8 +16,10 @@ if (faltantes.length > 0) {
 const raizRepo = path.join(__dirname, '..', '..', '..');
 const candidatos = [
   process.env.FRONTEND_DIR,
-  path.join(raizRepo, 'frontend'),
+  // Primero la carpeta del proyecto; "frontend" va al final porque en Windows
+  // coincide (sin importar mayúsculas) con una carpeta "Frontend" vieja
   path.join(raizRepo, 'PWII_PIA_GearTasktracker'),
+  path.join(raizRepo, 'frontend'),
 ]
   .filter(Boolean)
   .map((ruta) => path.resolve(ruta));
