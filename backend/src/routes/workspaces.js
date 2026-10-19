@@ -4,6 +4,8 @@ const validar = require('../middlewares/validar');
 const { cargarWorkspace, esMiembro, esAdminWorkspace } = require('../middlewares/workspace');
 const c = require('../controllers/workspacesController');
 const v = require('../validators/workspaces');
+const t = require('../controllers/tareasController');
+const vt = require('../validators/tareas');
 
 router.use(auth);
 
@@ -24,5 +26,10 @@ router.delete('/:id/miembros/:uid', v.validarId, v.validarUid, validar, cargarWo
 // Tableros del proyecto
 router.get('/:id/tableros', v.validarId, validar, cargarWorkspace, esMiembro, c.listarTableros);
 router.post('/:id/tableros', v.validarId, v.validarTablero, validar, cargarWorkspace, esAdminWorkspace, c.crearTablero);
+
+// Tareas del proyecto
+router.get('/:id/tareas', v.validarId, vt.validarFiltros, validar, cargarWorkspace, esMiembro, t.listarDelWorkspace);
+router.post('/:id/tareas', v.validarId, vt.validarCrearTarea, validar, cargarWorkspace, esAdminWorkspace, t.crear);
+router.post('/:id/tareas/auto-asignar', v.validarId, validar, cargarWorkspace, esAdminWorkspace, t.autoAsignar);
 
 module.exports = router;
