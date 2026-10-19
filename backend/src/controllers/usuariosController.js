@@ -29,4 +29,9 @@ const buscarUsuarios = asyncHandler(async (req, res) => {
   return exito(res, encontrados);
 });
 
-module.exports = { miPerfil, cambiarUsuario, cambiarPassword, buscarUsuarios };
+// PATCH /api/usuarios/me/plan   { plan: 'basico' | 'premium' }
+const cambiarPlan = asyncHandler(async (req, res) =>
+  exito(res, await usuariosService.cambiarPlan(req.usuario, req.body.plan))
+);
+
+module.exports = { miPerfil, cambiarUsuario, cambiarPassword, buscarUsuarios, cambiarPlan };

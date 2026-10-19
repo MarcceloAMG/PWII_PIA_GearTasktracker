@@ -19,44 +19,19 @@
     <i class="bi bi-gear-fill gear main-content-gear" style="--size:26rem; --bottom:-13rem; --right:-13rem; --duration:35s;"></i>
 
     <main class="container py-5 flex-grow-1 position-relative z-2" style="max-width: 800px;">
-      
-      <div class="d-flex align-items-center mb-4 pb-2 border-bottom border-secondary">
-        <i class="bi bi-bell-fill fs-2 text-dark me-3"></i>
-        <h2 class="fw-bold m-0 text-dark">Centro de Notificaciones</h2>
+
+      <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-secondary">
+        <div class="d-flex align-items-center">
+          <i class="bi bi-bell-fill fs-2 text-dark me-3"></i>
+          <h2 class="fw-bold m-0 text-dark">Centro de Notificaciones</h2>
+        </div>
+        <button type="button" class="btn btn-dark rounded-pill btn-sm px-3" id="btnMarcarTodas">
+          <i class="bi bi-check2-all me-1"></i>Marcar todas como leídas
+        </button>
       </div>
 
-      <div class="d-flex flex-column gap-3">
-
-        <!-- Notificación 1 ejemplo -->
-        <div class="notif-card p-3 rounded-4 shadow d-flex align-items-center justify-content-between" 
-             data-bs-toggle="modal" data-bs-target="#modalNotif1">
-          <div class="d-flex align-items-center gap-3 me-3 overflow-hidden">
-            <img src="../Assets/perfil.jpg" alt="Icono Notificación" class="notif-avatar">
-            <div class="text-truncate">
-              <span class="badge bg-warning text-dark mb-1">Nueva</span>
-              <p class="mb-0 fw-medium text-white text-truncate">
-                Ejemplo_01 se unió a tu equipo en el proyecto TAREAS02
-              </p>
-            </div>
-          </div>
-          <i class="bi bi-chevron-right text-white fs-5 flex-shrink-0"></i>
-        </div>
-
-        <!-- Notificación 2 ejemplo -->
-        <div class="notif-card p-3 rounded-4 shadow d-flex align-items-center justify-content-between" 
-             data-bs-toggle="modal" data-bs-target="#modalNotif2">
-          <div class="d-flex align-items-center gap-3 me-3 overflow-hidden">
-            <img src="../Assets/perfil.jpg" alt="Icono Notificación" class="notif-avatar">
-            <div class="text-truncate">
-              <span class="badge bg-warning text-dark mb-1">Nueva</span>
-              <p class="mb-0 fw-medium text-white text-truncate">
-                José de tu equipo en el proyecto TAREAS01 cambió su nombre de usuario a Luis
-              </p>
-            </div>
-          </div>
-          <i class="bi bi-chevron-right text-white fs-5 flex-shrink-0"></i>
-        </div>
-
+      <div class="d-flex flex-column gap-3" id="listaNotificaciones">
+        <p class="text-dark">Cargando notificaciones...</p>
       </div>
 
     </main>
@@ -70,27 +45,25 @@
 
   </div>
 
-  <!-- MODAL NOTIFICACIÓN 1 -->
-  <div class="modal fade" id="modalNotif1" tabindex="-1" aria-labelledby="modalNotif1Label" aria-hidden="true">
+  <!-- MODAL DE DETALLE (se reutiliza para cada tipo de notificación) -->
+  <div class="modal fade" id="modalNotif" tabindex="-1" aria-labelledby="modalNotifLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content notif-modal-content border-0 shadow-lg">
         <div class="modal-header border-bottom border-dark border-opacity-25">
-          <h5 class="modal-title fw-bold text-dark" id="modalNotif1Label">
-            <i class="bi bi-person-plus-fill me-2"></i>Nuevo Miembro
+          <h5 class="modal-title fw-bold text-dark" id="modalNotifLabel">
+            <i class="bi bi-bell-fill me-2"></i><span id="tituloModalNotif"></span>
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body text-dark">
           <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="../Assets/perfil.jpg" alt="Foto perfil" class="notif-avatar-modal">
+            <img src="../Assets/perfil.jpg" alt="Foto perfil" class="notif-avatar-modal" id="avatarModalNotif">
             <div>
-              <h6 class="mb-0 fw-bold">Ejemplo_01</h6>
-              <small class="text-muted">Proyecto: TAREAS02</small>
+              <h6 class="mb-0 fw-bold" id="nombreModalNotif"></h6>
+              <small class="text-muted" id="detalleModalNotif"></small>
             </div>
           </div>
-          <p class="mb-0">
-            El usuario <strong>Ejemplo_01</strong> se unio a tu equipo de trabajo dentro del proyecto <strong>TAREAS02</strong>. Ahora puede recibir asignación de tareas según su rol.
-          </p>
+          <p class="mb-0" id="textoModalNotif"></p>
         </div>
         <div class="modal-footer border-0">
           <button type="button" class="btn btn-dark rounded-pill px-4" data-bs-dismiss="modal">Entendido</button>
@@ -98,41 +71,10 @@
       </div>
     </div>
   </div>
-
-  <!-- MODAL NOTIFICACIÓN 2 -->
-  <div class="modal fade" id="modalNotif2" tabindex="-1" aria-labelledby="modalNotif2Label" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content notif-modal-content border-0 shadow-lg">
-        <div class="modal-header border-bottom border-dark border-opacity-25">
-          <h5 class="modal-title fw-bold text-dark" id="modalNotif2Label">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>Cambio de Nombre de Usuario
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body text-dark">
-          <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="../Assets/perfil.jpg" alt="Foto perfil" class="notif-avatar-modal">
-            <div>
-              <h6 class="mb-0 fw-bold">Luis</h6>
-              <small class="text-muted">Proyecto: TAREAS01</small>
-            </div>
-          </div>
-          <p class="mb-0">
-            Aviso del sistema: El integrante de tu equipo en el proyecto <strong>TAREAS01</strong> anteriormente conocido como <strong>José</strong>,cambio su nombre de usuario a <strong>Luis</strong>.
-          </p>
-        </div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-dark rounded-pill px-4" data-bs-dismiss="modal">Entendido</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <!-- Los Modals vana  reutilizarse segun el tipo de notificación, ya sea
-     CAMBIO DE USUARIO o USUARIO NUEVO EN TU EQUIPO, entre otros eventos de notificación -->
-
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../Js/Pantallas.js"></script>
+  <script src="../Js/api.js"></script>
+  <script src="../Js/Notificaciones.js"></script>
 </body>
 </html>

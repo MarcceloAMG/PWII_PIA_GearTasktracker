@@ -25,6 +25,10 @@ app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/workspaces', require('./routes/workspaces'));
 app.use('/api/tableros', require('./routes/tableros'));
 app.use('/api/tareas', require('./routes/tareas'));
+app.use('/api/notificaciones', require('./routes/notificaciones'));
+app.use('/api/reportes', require('./routes/reportes'));
+app.use('/api/productividad', require('./routes/productividad'));
+app.use('/api/chats', require('./routes/chats'));
 
 app.use('/api', rutaNoEncontrada);
 

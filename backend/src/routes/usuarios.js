@@ -6,11 +6,13 @@ const {
   cambiarUsuario,
   cambiarPassword,
   buscarUsuarios,
+  cambiarPlan,
 } = require('../controllers/usuariosController');
 const {
   validarCambioUsuario,
   validarCambioPassword,
   validarBusqueda,
+  validarCambioPlan,
 } = require('../validators/usuarios');
 
 // Todas las rutas de usuarios exigen sesión
@@ -20,6 +22,6 @@ router.get('/me', miPerfil);
 router.patch('/me/usuario', validarCambioUsuario, validar, cambiarUsuario);
 router.patch('/me/password', validarCambioPassword, validar, cambiarPassword);
 router.get('/buscar', validarBusqueda, validar, buscarUsuarios);
-// Sesión 6: PATCH /me/plan
+router.patch('/me/plan', validarCambioPlan, validar, cambiarPlan);
 
 module.exports = router;
