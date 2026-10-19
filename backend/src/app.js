@@ -24,7 +24,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/workspaces', require('./routes/workspaces'));
 app.use('/api/tableros', require('./routes/tableros'));
-// app.use('/api/tareas', require('./routes/tareas'));         (Sesión 5)
+app.use('/api/tareas', require('./routes/tareas'));
 
 app.use('/api', rutaNoEncontrada);
 

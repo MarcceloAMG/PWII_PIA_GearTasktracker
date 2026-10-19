@@ -290,4 +290,58 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // MIS TAREAS: las que tengo asignadas en todos mis proyectos
+  const tablaMisTareas = document.getElementById('tablaMisTareas');
+  const ESTADOS_TAREA = {
+    asignada: ['Asignada', 'bg-info text-dark'],
+    en_proceso: ['En Proceso', 'bg-success'],
+    limbo: ['Limbo (Exceso)', 'bg-danger'],
+    pendiente_excepcion: ['Pendiente (Excepción)', 'bg-warning text-dark'],
+  };
+
+  async function cargarMisTareas() {
+    if (!tablaMisTareas) return;
+    const mensajeFila = (texto, clase) => {
+      const fila = crearElemento('tr');
+      const celda = crearElemento('td', clase, texto);
+      celda.colSpan = 5;
+      fila.append(celda);
+      tablaMisTareas.replaceChildren(fila);
+    };
+
+    try {
+      const mias = await GearTask.api('GET', '/tareas/mias');
+      if (mias.length === 0) {
+        mensajeFila('No tienes tareas asignadas por ahora.', 'text-white-50');
+        return;
+      }
+      tablaMisTareas.replaceChildren();
+      mias.forEach((tarea) => {
+        const fila = crearElemento('tr');
+        const celdaProyecto = crearElemento('td');
+        celdaProyecto.append(
+          crearElemento('span', 'badge bg-warning text-dark', tarea.workspace ? tarea.workspace.codigo : '')
+        );
+        const celdaRol = crearElemento('td');
+        celdaRol.append(crearElemento('span', 'badge bg-info text-dark', tarea.rolRequerido));
+        const [etiqueta, clase] = ESTADOS_TAREA[tarea.estado] || [tarea.estado, 'bg-secondary'];
+        const celdaEstado = crearElemento('td');
+        celdaEstado.append(crearElemento('span', `badge ${clase}`, etiqueta));
+
+        fila.append(
+          celdaProyecto,
+          crearElemento('td', 'fw-semibold', tarea.titulo),
+          celdaRol,
+          crearElemento('td', '', tarea.fechaLimite ? new Date(tarea.fechaLimite).toLocaleDateString('es-MX') : 'Sin fecha'),
+          celdaEstado
+        );
+        tablaMisTareas.append(fila);
+      });
+    } catch (error) {
+      mensajeFila(error.message, 'text-danger');
+    }
+  }
+
+  cargarMisTareas();
 });

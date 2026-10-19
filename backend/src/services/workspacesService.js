@@ -4,6 +4,7 @@ const Usuario = require('../models/Usuario');
 const ApiError = require('../utils/ApiError');
 const { exigirPremium } = require('../utils/plan');
 const { avisarNuevosMiembros } = require('./notificacionService');
+const { liberarTareasDe } = require('./tareasService');
 
 const CAMPOS_USUARIO = 'usuario nombreCompleto foto rol';
 
@@ -144,7 +145,7 @@ async function quitarMiembro(actor, workspace, idMiembro) {
     throw ApiError.noEncontrado('Ese usuario no pertenece al proyecto');
   }
   await workspace.save();
-  // Sesión 5: las tareas activas de quien sale pasan a "limbo"
+  await liberarTareasDe(workspace._id, idMiembro);
   return obtener(workspace._id);
 }
 
