@@ -1,4 +1,6 @@
 const Usuario = require('../models/Usuario');
+const Workspace = require('../models/Workspace');
+const { LIMITE_TAREAS_BASICO } = require('../config/constantes');
 const ApiError = require('../utils/ApiError');
 const { avisarCambioUsuario } = require('./notificacionService');
 
@@ -50,4 +52,21 @@ async function buscar({ usuario, telefono }, idActual) {
     .limit(10);
 }
 
-module.exports = { cambiarUsuario, cambiarPassword, buscar };
+// Cambia entre plan básico y Premium (el pago es simulado, como en la pantalla del front).
+// Al volver a básico, los límites personalizados de sus proyectos regresan al fijo de 3.
+async function cambiarPlan(usuario, plan) {
+  if (usuario.plan === plan) return usuario;
+
+  usuario.plan = plan;
+  await usuario.save();
+
+  if (plan === 'basico') {
+    await Workspace.updateMany(
+      { creador: usuario._id },
+      { $set: { limiteGeneral: LIMITE_TAREAS_BASICO, 'miembros.$[].limiteTareas': null } }
+    );
+  }
+  return usuario;
+}
+
+module.exports = { cambiarUsuario, cambiarPassword, buscar, cambiarPlan };

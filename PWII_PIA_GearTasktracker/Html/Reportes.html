@@ -20,7 +20,7 @@
   <div class="app-shell position-relative flex-column">
 
     <header class="topbar w-100 d-flex align-items-center justify-content-between px-4 py-3 z-3 border-bottom border-secondary border-opacity-25">
-      
+
       <nav class="d-flex align-items-center gap-2">
         <button type="button" class="btn btn-outline-light rounded-pill px-3 py-1 btn-nav-view active" id="btnVistaLista">
           <i class="bi bi-list-task me-1"></i> Lista
@@ -43,7 +43,7 @@
 
       <!-- VISTA 1: LISTA DE REPORTES (DISPONIBLE EN BÁSICO Y PREMIUM) -->
       <div id="vistaLista" class="w-100 min-vh-100 notif-screen d-flex flex-column position-relative overflow-hidden">
-        
+
         <main class="container py-4 flex-grow-1 position-relative z-2" style="max-width: 800px;">
           <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-secondary">
             <div class="d-flex align-items-center">
@@ -56,36 +56,7 @@
           </div>
 
           <div class="d-flex flex-column gap-3" id="contenedorReportesLista">
-            
-            <!-- Reporte 1 -->
-            <div class="notif-card p-3 rounded-4 shadow d-flex align-items-center justify-content-between" 
-                 data-reporte-id="1" data-bs-toggle="modal" data-bs-target="#modalReporte1">
-              <div class="d-flex align-items-center gap-3 me-3 overflow-hidden">
-                <img src="../Assets/perfil.jpg" alt="Foto perfil" class="notif-avatar">
-                <div class="text-truncate">
-                  <span class="badge bg-danger mb-1">FALTA DE TIEMPO</span>
-                  <p class="mb-0 fw-medium text-white text-truncate">
-                    Ejemplo_01 no entregó la tarea asignada dentro del tiempo límite.
-                  </p>
-                </div>
-              </div>
-              <i class="bi bi-chevron-right text-white fs-5 flex-shrink-0"></i>
-            </div>
-
-            <!-- Reporte 2 -->
-            <div class="notif-card p-3 rounded-4 shadow d-flex align-items-center justify-content-between" 
-                 data-reporte-id="2" data-bs-toggle="modal" data-bs-target="#modalReporte2">
-              <div class="d-flex align-items-center gap-3 me-3 overflow-hidden">
-                <img src="../Assets/perfil.jpg" alt="Foto perfil" class="notif-avatar">
-                <div class="text-truncate">
-                  <span class="badge bg-warning text-dark mb-1">MATERIAL INSUFICIENTE</span>
-                  <p class="mb-0 fw-medium text-white text-truncate">
-                    Ejemplo_02 reportó daños en su equipo de computo.
-                  </p>
-                </div>
-              </div>
-              <i class="bi bi-chevron-right text-white fs-5 flex-shrink-0"></i>
-            </div>
+            <p class="text-dark">Cargando reportes...</p>
           </div>
         </main>
 
@@ -100,7 +71,7 @@
 
       <!-- VISTA 2: GRÁFICAS DE INCIDENCIAS (SOLO PREMIUM)-->
       <div id="vistaGrafica" class="w-100 min-vh-100 d-none flex-row">
-        
+
         <div class="content-column flex-grow-1">
           <main class="main-content d-flex flex-column p-4 position-relative">
 
@@ -114,25 +85,26 @@
             <div class="chart-wrapper rounded-4 p-4 shadow-sm z-2 flex-grow-1 d-flex flex-column justify-content-between">
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="text-white mb-0" id="tituloIncidencia">Frecuencia Mensual: FALTA DE TIEMPO</h5>
-                <span class="badge bg-outline-light text-white-50 border border-secondary">Acumulado Anual</span>
+                <span class="badge bg-outline-light text-white-50 border border-secondary" id="etiquetaAnio">Acumulado Anual</span>
               </div>
 
               <div class="chart-scroll-container">
                 <div class="chart-bars-mock d-flex align-items-end gap-3 pb-3" id="contenedorBarras">
-                  <div class="bar-item" data-mes="Ene"><div class="bar-fill" style="height: 70%;"></div><span>Ene</span></div>
-                  <div class="bar-item" data-mes="Feb"><div class="bar-fill" style="height: 40%;"></div><span>Feb</span></div>
-                  <div class="bar-item" data-mes="Mar"><div class="bar-fill" style="height: 90%;"></div><span>Mar</span></div>
-                  <div class="bar-item" data-mes="Abr"><div class="bar-fill" style="height: 30%;"></div><span>Abr</span></div>
-                  <div class="bar-item" data-mes="May"><div class="bar-fill" style="height: 60%;"></div><span>May</span></div>
-                  <div class="bar-item" data-mes="Jun"><div class="bar-fill" style="height: 85%;"></div><span>Jun</span></div>
-                  <div class="bar-item" data-mes="Jul"><div class="bar-fill" style="height: 50%;"></div><span>Jul</span></div>
-                  <div class="bar-item" data-mes="Ago"><div class="bar-fill" style="height: 75%;"></div><span>Ago</span></div>
-                  <div class="bar-item" data-mes="Sep"><div class="bar-fill" style="height: 95%;"></div><span>Sep</span></div>
-                  <div class="bar-item" data-mes="Oct"><div class="bar-fill" style="height: 20%;"></div><span>Oct</span></div>
-                  <div class="bar-item" data-mes="Nov"><div class="bar-fill" style="height: 45%;"></div><span>Nov</span></div>
-                  <div class="bar-item" data-mes="Dic"><div class="bar-fill" style="height: 65%;"></div><span>Dic</span></div>
+                  <div class="bar-item" data-mes="Ene"><div class="bar-fill" style="height: 0%;"></div><span>Ene</span></div>
+                  <div class="bar-item" data-mes="Feb"><div class="bar-fill" style="height: 0%;"></div><span>Feb</span></div>
+                  <div class="bar-item" data-mes="Mar"><div class="bar-fill" style="height: 0%;"></div><span>Mar</span></div>
+                  <div class="bar-item" data-mes="Abr"><div class="bar-fill" style="height: 0%;"></div><span>Abr</span></div>
+                  <div class="bar-item" data-mes="May"><div class="bar-fill" style="height: 0%;"></div><span>May</span></div>
+                  <div class="bar-item" data-mes="Jun"><div class="bar-fill" style="height: 0%;"></div><span>Jun</span></div>
+                  <div class="bar-item" data-mes="Jul"><div class="bar-fill" style="height: 0%;"></div><span>Jul</span></div>
+                  <div class="bar-item" data-mes="Ago"><div class="bar-fill" style="height: 0%;"></div><span>Ago</span></div>
+                  <div class="bar-item" data-mes="Sep"><div class="bar-fill" style="height: 0%;"></div><span>Sep</span></div>
+                  <div class="bar-item" data-mes="Oct"><div class="bar-fill" style="height: 0%;"></div><span>Oct</span></div>
+                  <div class="bar-item" data-mes="Nov"><div class="bar-fill" style="height: 0%;"></div><span>Nov</span></div>
+                  <div class="bar-item" data-mes="Dic"><div class="bar-fill" style="height: 0%;"></div><span>Dic</span></div>
                 </div>
               </div>
+              <small class="text-white-50" id="resumenIncidencia"></small>
             </div>
           </main>
         </div>
@@ -151,6 +123,14 @@
               <span>MATERIAL INSUFICIENTE</span>
               <i class="bi bi-box-seam"></i>
             </button>
+            <button class="month-item" data-incidencia="ENFERMEDAD">
+              <span>ENFERMEDAD</span>
+              <i class="bi bi-heart-pulse"></i>
+            </button>
+            <button class="month-item" data-incidencia="OTRO">
+              <span>OTRO</span>
+              <i class="bi bi-three-dots"></i>
+            </button>
           </div>
 
           <div class="sidebar-footer">
@@ -168,7 +148,8 @@
 
   </div>
 
-  <div class="modal fade" id="modalReporte1" tabindex="-1" aria-hidden="true">
+  <!-- MODAL DE DETALLE (se reutiliza para cada reporte) -->
+  <div class="modal fade" id="modalReporte" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content notif-modal-content border-0 shadow-lg">
         <div class="modal-header border-bottom border-dark border-opacity-25">
@@ -179,43 +160,14 @@
         </div>
         <div class="modal-body text-dark">
           <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="../Assets/perfil.jpg" alt="Foto perfil" class="notif-avatar-modal">
+            <img src="../Assets/perfil.jpg" alt="Foto perfil" class="notif-avatar-modal" id="avatarModalReporte">
             <div>
-              <h6 class="mb-0 fw-bold">Ejemplo_01</h6>
-              <span class="badge bg-danger">FALTA DE TIEMPO</span>
+              <h6 class="mb-0 fw-bold" id="usuarioModalReporte"></h6>
+              <span class="badge bg-danger" id="motivoModalReporte"></span>
             </div>
           </div>
-          <p class="mb-0">
-            El usuario <strong>Ejemplo_01</strong> ha reportado un retraso por <strong>FALTA DE TIEMPO</strong>. Lo siendo jefe no pude terminar el trabajo a tiempo.
-          </p>
-        </div>
-        <div class="modal-footer border-0">
-          <button type="button" class="btn btn-dark rounded-pill px-4" data-bs-dismiss="modal">Entendido</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="modalReporte2" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content notif-modal-content border-0 shadow-lg">
-        <div class="modal-header border-bottom border-dark border-opacity-25">
-          <h5 class="modal-title fw-bold text-dark">
-            <i class="bi bi-exclamation-octagon-fill me-2 text-warning"></i>Detalle de Incumplimiento
-          </h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-        </div>
-        <div class="modal-body text-dark">
-          <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="../Assets/perfil.jpg" alt="Foto perfil" class="notif-avatar-modal">
-            <div>
-              <h6 class="mb-0 fw-bold">Ejemplo_02</h6>
-              <span class="badge bg-warning text-dark">MATERIAL INSUFICIENTE</span>
-            </div>
-          </div>
-          <p class="mb-0">
-            El integrante <strong>Ejemplo_02</strong> reportó un problema de tipo <strong>MATERIAL INSUFICIENTE</strong>. Mi computadora se daño y no pude terminar el trabajo asignado.
-          </p>
+          <p class="mb-2 text-muted small" id="contextoModalReporte"></p>
+          <p class="mb-0" id="descripcionModalReporte"></p>
         </div>
         <div class="modal-footer border-0">
           <button type="button" class="btn btn-dark rounded-pill px-4" data-bs-dismiss="modal">Entendido</button>
@@ -259,6 +211,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../Js/Pantallas.js"></script>
+  <script src="../Js/api.js"></script>
   <script src="../Js/Reportes.js"></script>
 </body>
 </html>

@@ -1,66 +1,99 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const switchVersion = document.getElementById('switchVersion');
-  const monthItems = document.querySelectorAll('.month-item');
   const tituloMes = document.getElementById('tituloMes');
   const badgePlan = document.getElementById('badgePlan');
+  const listaMeses = document.getElementById('listaMeses');
   const vistaGrafica = document.getElementById('vistaGrafica');
   const vistaVacia = document.getElementById('vistaVacia');
+  const contenedorDias = document.getElementById('contenedorDias');
+  const resumenMes = document.getElementById('resumenMes');
 
-  actualizarEstadoPlan(false);
+  const MESES = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+  ];
+  const hoy = new Date();
+  const anio = hoy.getFullYear();
+  const mesActual = hoy.getMonth() + 1;
 
-  switchVersion.addEventListener('change', (e) => {
-    const esPremium = e.target.checked;
-    actualizarEstadoPlan(esPremium);
-  });
+  let esPremium = false;
+  let mesSeleccionado = mesActual;
 
-  function actualizarEstadoPlan(esPremium) {
-    if (esPremium) {
-      badgePlan.textContent = 'Premium';
-      badgePlan.className = 'badge bg-warning text-dark';
-      
-      // Desbloquear todos los meses y quita íconos de candado
-      monthItems.forEach(item => {
-        item.classList.remove('disabled');
-        const lock = item.querySelector('.lock-icon');
-        if (lock) lock.classList.add('d-none');
+  const crearElemento = (etiqueta, clases, texto) => {
+    const elemento = document.createElement(etiqueta);
+    if (clases) elemento.className = clases;
+    if (texto !== undefined) elemento.textContent = texto;
+    return elemento;
+  };
+
+  // Lista de meses: en básico solo el mes actual está disponible (los demás con candado)
+  function pintarMeses() {
+    listaMeses.replaceChildren();
+    MESES.forEach((nombre, indice) => {
+      const numero = indice + 1;
+      const esActual = numero === mesActual;
+      const bloqueado = !esPremium && !esActual;
+
+      const boton = crearElemento('button', 'month-item');
+      boton.type = 'button';
+      boton.dataset.month = nombre;
+      boton.append(esActual ? `${nombre} (Actual)` : `${nombre} `);
+      if (bloqueado) {
+        boton.classList.add('disabled');
+        boton.append(crearElemento('i', 'bi bi-lock-fill lock-icon'));
+      }
+      if (numero === mesSeleccionado) boton.classList.add('active');
+
+      boton.addEventListener('click', () => {
+        if (boton.classList.contains('disabled')) return;
+        mesSeleccionado = numero;
+        pintarMeses();
+        cargarMes();
       });
-    } else {
-      badgePlan.textContent = 'Básico';
-      badgePlan.className = 'badge bg-secondary';
+      listaMeses.append(boton);
+    });
+  }
 
-      // Bloquear meses salvo Septiembre (Mes actual)
-      monthItems.forEach(item => {
-        const mes = item.getAttribute('data-month');
-        const lock = item.querySelector('.lock-icon');
-        
-        if (mes !== 'Septiembre') {
-          item.classList.add('disabled');
-          if (lock) lock.classList.remove('d-none');
-        } else {
-          item.click(); // Regresa automáticamente a Septiembre al volver a Básico
-        }
-      });
+  function pintarBarras(datos) {
+    contenedorDias.replaceChildren();
+    const maximo = Math.max(1, ...datos.porDia);
+
+    datos.porDia.forEach((cantidad, indice) => {
+      const barra = crearElemento('div', 'bar-item');
+      barra.title = `Día ${indice + 1}: ${cantidad} tarea(s) completada(s)`;
+      const relleno = crearElemento('div', 'bar-fill');
+      relleno.style.height = `${(cantidad / maximo) * 100}%`;
+      barra.append(relleno, crearElemento('span', '', `Día ${indice + 1}`));
+      contenedorDias.append(barra);
+    });
+  }
+
+  async function cargarMes() {
+    tituloMes.textContent = `Métricas de Productividad - ${MESES[mesSeleccionado - 1]}`;
+    try {
+      const datos = await GearTask.api('GET', `/productividad?anio=${anio}&mes=${mesSeleccionado}`);
+      if (datos.completadas === 0) {
+        vistaGrafica.classList.add('d-none');
+        vistaVacia.classList.remove('d-none');
+        return;
+      }
+      vistaVacia.classList.add('d-none');
+      vistaGrafica.classList.remove('d-none');
+      resumenMes.textContent =
+        `${datos.completadas} tarea(s) completada(s) · ${datos.aTiempo} a tiempo`;
+      pintarBarras(datos);
+    } catch (error) {
+      window.alert(error.message);
     }
   }
 
-  // Selección de Meses
-  monthItems.forEach(item => {
-    item.addEventListener('click', () => {
-      if (item.classList.contains('disabled')) return;
+  GearTask.enlazarSwitchPlan((plan) => {
+    esPremium = plan === 'premium';
+    badgePlan.textContent = esPremium ? 'Premium' : 'Básico';
+    badgePlan.className = esPremium ? 'badge bg-warning text-dark' : 'badge bg-secondary';
 
-      monthItems.forEach(m => m.classList.remove('active'));
-      item.classList.add('active');
-
-      const mesSeleccionado = item.getAttribute('data-month');
-      tituloMes.textContent = `Métricas de Productividad - ${mesSeleccionado}`;
-
-      if (mesSeleccionado === 'Septiembre') {
-        vistaGrafica.classList.remove('d-none');
-        vistaVacia.classList.add('d-none');
-      } else {
-        vistaGrafica.classList.add('d-none');
-        vistaVacia.classList.remove('d-none');
-      }
-    });
+    // Al volver a básico se regresa al mes actual, el único disponible
+    if (!esPremium) mesSeleccionado = mesActual;
+    pintarMeses();
+    cargarMes();
   });
 });
