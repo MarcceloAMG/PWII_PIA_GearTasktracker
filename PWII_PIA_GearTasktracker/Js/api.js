@@ -8,6 +8,7 @@
   // backend; cambia el puerto aquí si modificaste PORT en el .env.
   const URL_BACKEND = 'http://localhost:3000';
   const API_BASE = window.location.port === '3000' ? '/api' : `${URL_BACKEND}/api`;
+  const ORIGEN = window.location.port === '3000' ? '' : URL_BACKEND;
 
   const CLAVE_TOKEN = 'geartask_token';
   const CLAVE_USUARIO = 'geartask_usuario';
@@ -99,12 +100,18 @@
     return json ? json.data : null;
   }
 
+  // Las fotos subidas viven en el backend (/uploads/...); la foto por defecto es un asset del front
+  const urlFoto = (foto) =>
+    foto && foto.startsWith('/uploads/') ? `${ORIGEN}${foto}` : '../Assets/perfil.jpg';
+
   window.GearTask = {
     api,
     guardarSesion,
     obtenerToken,
     obtenerUsuario,
+    limpiarSesion,
     cerrarSesion,
     requerirSesion,
+    urlFoto,
   };
 })();

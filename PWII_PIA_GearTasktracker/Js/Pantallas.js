@@ -1,3 +1,18 @@
+// Pantallas privadas: sin sesión se manda al login. Las públicas son la principal, el login y el registro.
+(function protegerPantallas() {
+  const PUBLICAS = ['PaginaPrincipal.html', 'login.html', 'registro.html'];
+  const archivo = window.location.pathname.split('/').pop();
+  if (!archivo.endsWith('.html') || PUBLICAS.includes(archivo)) return;
+
+  let token = null;
+  try {
+    token = localStorage.getItem('geartask_token');
+  } catch {
+    // sin almacenamiento: se trata como sin sesión
+  }
+  if (!token) window.location.replace('login.html');
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   const loader = document.getElementById('page-loader');
 
