@@ -39,6 +39,8 @@
             </div>
 
             <form id="formRegistro">
+              <!-- Aquí se muestran los errores que devuelve el servidor -->
+              <div id="registroError" class="alert alert-danger py-2 small d-none" role="alert"></div>
 
               <div class="mb-3 text-center">
                 <label for="regFoto" class="form-label d-block">Foto de perfil</label>
@@ -47,23 +49,23 @@
 
               <div class="mb-3">
                 <label for="regNombre" class="form-label">Nombre completo</label>
-                <input type="text" class="form-control auth-input" id="regNombre" placeholder="Nombre y apellidos">
+                <input type="text" class="form-control auth-input" id="regNombre" placeholder="Nombre y apellidos" required minlength="3" maxlength="80" autocomplete="name">
               </div>
 
               <div class="mb-3">
                 <label for="regUsuario" class="form-label">Nombre de usuario</label>
-                <input type="text" class="form-control auth-input" id="regUsuario" placeholder="usuario único">
+                <input type="text" class="form-control auth-input" id="regUsuario" placeholder="usuario único" required minlength="3" maxlength="30" autocomplete="username">
               </div>
 
               <div class="mb-3">
                 <label for="regCorreo" class="form-label">Correo</label>
-                <input type="email" class="form-control auth-input" id="regCorreo" placeholder="correo@ejemplo.com">
+                <input type="email" class="form-control auth-input" id="regCorreo" placeholder="correo@ejemplo.com" required autocomplete="email">
               </div>
 
               <div class="mb-3">
                 <label for="regPass" class="form-label">Contraseña</label>
                 <div class="input-group auth-input-group">
-                  <input type="password" class="form-control auth-input" id="regPass" placeholder="••••••••">
+                  <input type="password" class="form-control auth-input" id="regPass" placeholder="••••••••" required minlength="6" maxlength="72" autocomplete="new-password">
                   <button class="btn auth-toggle-pass" type="button" data-target="regPass" aria-label="Mostrar u ocultar contraseña">
                     <i class="bi bi-eye-fill"></i>
                   </button>
@@ -72,7 +74,7 @@
 
               <div class="mb-3">
                 <label for="regTelefono" class="form-label">Número de teléfono</label>
-                <input type="tel" class="form-control auth-input" id="regTelefono" placeholder="10 dígitos">
+                <input type="tel" class="form-control auth-input" id="regTelefono" placeholder="10 dígitos" required inputmode="numeric" maxlength="10" autocomplete="tel">
               </div>
 
               <div class="mb-4">
@@ -105,6 +107,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../Js/Pantallas.js"></script>
+  <script src="../Js/api.js"></script>
   <script src="../Js/registro.js"></script>
 </body>
 </html>
