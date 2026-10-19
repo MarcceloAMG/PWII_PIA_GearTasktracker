@@ -22,7 +22,8 @@ app.get('/api/salud', (_req, res) => {
 // Rutas de cada módulo, se montan conforme se construyen
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/usuarios', require('./routes/usuarios'));
-// app.use('/api/workspaces', require('./routes/workspaces')); (Sesión 4)
+app.use('/api/workspaces', require('./routes/workspaces'));
+app.use('/api/tableros', require('./routes/tableros'));
 // app.use('/api/tareas', require('./routes/tareas'));         (Sesión 5)
 
 app.use('/api', rutaNoEncontrada);

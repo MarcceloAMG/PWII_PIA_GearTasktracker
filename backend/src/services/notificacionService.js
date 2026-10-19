@@ -23,4 +23,19 @@ async function avisarCambioUsuario(usuario, mensaje) {
   );
 }
 
-module.exports = { avisarCambioUsuario };
+// Avisa a quienes acaban de ser añadidos a un workspace
+async function avisarNuevosMiembros(workspace, admin, usuarios) {
+  if (usuarios.length === 0) return;
+
+  await Notificacion.insertMany(
+    usuarios.map((usuario) => ({
+      destinatario: usuario._id,
+      tipo: 'nuevo_miembro',
+      mensaje: `${admin.usuario} te añadió al proyecto ${workspace.titulo}`,
+      workspace: workspace._id,
+      origen: admin._id,
+    }))
+  );
+}
+
+module.exports = { avisarCambioUsuario, avisarNuevosMiembros };
