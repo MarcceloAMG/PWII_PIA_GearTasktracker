@@ -31,7 +31,8 @@ function manejarErrores(error, _req, res, _next) {
     mensaje = 'Sesión no válida o expirada';
   } else if (error.name === 'MulterError') {
     codigo = 400;
-    mensaje = error.message;
+    mensaje =
+      error.code === 'LIMIT_FILE_SIZE' ? 'La foto no puede pasar de 2 MB' : error.message;
   }
 
   if (codigo >= 500) console.error(error);
