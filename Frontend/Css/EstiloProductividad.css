@@ -1,0 +1,97 @@
+.sidebar-months {
+  width: 260px;
+  background-color: var(--gt-blue-dark);
+}
+
+.months-list::-webkit-scrollbar,
+.chart-scroll-container::-webkit-scrollbar {
+  height: 8px;
+  width: 6px;
+}
+
+.months-list::-webkit-scrollbar-thumb,
+.chart-scroll-container::-webkit-scrollbar-thumb {
+  background-color: var(--gt-blue-light);
+  border-radius: 10px;
+}
+
+.month-item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--gt-white);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.month-item:hover:not(.disabled) {
+  background-color: rgba(238, 242, 245, 0.1);
+}
+
+.month-item.active {
+  background-color: var(--gt-blue);
+  color: var(--gt-yellow-glow);
+  font-weight: 600;
+}
+
+.month-item.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.month-item .lock-icon {
+  font-size: 0.8rem;
+  color: var(--gt-yellow-glow);
+}
+
+.chart-wrapper {
+  background-color: var(--gt-blue-dark);
+  border: 1px solid rgba(238, 242, 245, 0.15);
+  min-height: 380px;
+}
+
+.chart-scroll-container {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.chart-bars-mock {
+  height: 280px;
+  min-width: 1200px; 
+}
+
+.bar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.bar-fill {
+  width: 18px;
+  background: linear-gradient(180deg, var(--gt-yellow-glow) 0%, var(--gt-blue-light) 100%);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease;
+}
+
+.bar-item span {
+  color: var(--gt-white);
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* Estado vacío */
+.chart-empty-state {
+  border: 2px dashed rgba(238, 242, 245, 0.2);
+  border-radius: 1rem;
+}

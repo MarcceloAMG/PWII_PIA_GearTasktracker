@@ -76,7 +76,7 @@
 
         <div class="sidebar-footer-row">
           <i class="bi bi-gear-fill sidebar-footer-gear"></i>
-          <a href="PaginaPrincipal.html" class="btn btn-outline-light btn-glow btn-glow-danger rounded-pill sidebar-footer-btn d-flex align-items-center justify-content-center gap-2">
+          <a href="PaginaPrincipal.html" id="btnCerrarSesion" class="btn btn-outline-light btn-glow btn-glow-danger rounded-pill sidebar-footer-btn d-flex align-items-center justify-content-center gap-2">
             <i class="bi bi-box-arrow-right"></i>
             <span class="footer-btn-text">Cerrar sesión</span>
           </a>
@@ -98,21 +98,33 @@
 
           <form id="formAjustes">
             <div class="modal-body">
+              <!-- Aquí se muestran los avisos y errores al guardar -->
+              <div id="ajustesMensaje" class="alert py-2 small d-none" role="alert"></div>
+
               <label class="form-label">Nombre de usuario actual</label>
               <p class="ajustes-usuario-actual" id="usuarioActual"></p>
 
               <div class="mb-3">
                 <label for="nuevoUsuario" class="form-label">Nuevo nombre de usuario</label>
-                <input type="text" class="form-control auth-input" id="nuevoUsuario" placeholder="nuevo usuario">
+                <input type="text" class="form-control auth-input" id="nuevoUsuario" placeholder="nuevo usuario" minlength="3" maxlength="30">
               </div>
 
               <hr class="border-secondary">
 
               <p class="ajustes-warning"><i class="bi bi-exclamation-triangle-fill me-1"></i>Esta acción es irreversible</p>
+              <div class="mb-3">
+                <label for="passActual" class="form-label">Contraseña actual</label>
+                <div class="input-group auth-input-group">
+                  <input type="password" class="form-control auth-input" id="passActual" placeholder="••••••••" autocomplete="current-password">
+                  <button class="btn auth-toggle-pass" type="button" data-target="passActual" aria-label="Mostrar u ocultar contraseña">
+                    <i class="bi bi-eye-fill"></i>
+                  </button>
+                </div>
+              </div>
               <div class="mb-2">
                 <label for="nuevaPass" class="form-label">Nueva contraseña</label>
                 <div class="input-group auth-input-group">
-                  <input type="password" class="form-control auth-input" id="nuevaPass" placeholder="••••••••">
+                  <input type="password" class="form-control auth-input" id="nuevaPass" placeholder="••••••••" minlength="6" maxlength="72" autocomplete="new-password">
                   <button class="btn auth-toggle-pass" type="button" data-target="nuevaPass" aria-label="Mostrar u ocultar contraseña">
                     <i class="bi bi-eye-fill"></i>
                   </button>
@@ -197,48 +209,12 @@
           </div>
 
           <div class="tab-content" id="pills-tabContent">
-            
+
             <!-- PESTAÑA PROYECTOS -->
             <div class="tab-pane fade show active" id="pills-proyectos" role="tabpanel">
               <div class="row g-4" id="gridProyectos">
-                
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="project-card p-4 rounded-4 shadow h-100 d-flex flex-column justify-content-between" onclick="window.location.href='DetalleProyecto.html?id=TAREAS01'">
-                    <div>
-                      <div class="d-flex align-items-center justify-content-between mb-2">
-                        <span class="badge bg-warning text-dark fw-bold">TAREAS01</span>
-                        <small class="text-white-50"><i class="bi bi-people-fill me-1"></i>3 Miembros</small>
-                      </div>
-                      <h4 class="text-white fw-bold mb-2">Sistema Web Principal</h4>
-                      <p class="text-white-50 small mb-3 text-truncate-3">
-                        Desarrollo de módulos de frontend y arquitectura general para el gestor de tareas corporativo.
-                      </p>
-                    </div>
-                    <div class="pt-3 border-top border-secondary d-flex justify-content-between align-items-center">
-                      <span class="text-white-50 small">Creado: Sep 2026</span>
-                      <span class="btn-link text-warning fw-semibold text-decoration-none small">Ver Tablero <i class="bi bi-arrow-right"></i></span>
-                    </div>
-                  </div>
-                </div>
 
-                <div class="col-12 col-md-6 col-lg-4">
-                  <div class="project-card p-4 rounded-4 shadow h-100 d-flex flex-column justify-content-between" onclick="window.location.href='DetalleProyecto.html?id=TAREAS02'">
-                    <div>
-                      <div class="d-flex align-items-center justify-content-between mb-2">
-                        <span class="badge bg-warning text-dark fw-bold">TAREAS02</span>
-                        <small class="text-white-50"><i class="bi bi-people-fill me-1"></i>2 Miembros</small>
-                      </div>
-                      <h4 class="text-white fw-bold mb-2">Diseño de Interfaz e Identidad</h4>
-                      <p class="text-white-50 small mb-3 text-truncate-3">
-                        Maquetación de componentes, definición de paleta de colores y componentes interactivos.
-                      </p>
-                    </div>
-                    <div class="pt-3 border-top border-secondary d-flex justify-content-between align-items-center">
-                      <span class="text-white-50 small">Creado: Sep 2026</span>
-                      <span class="btn-link text-warning fw-semibold text-decoration-none small">Ver Tablero <i class="bi bi-arrow-right"></i></span>
-                    </div>
-                  </div>
-                </div>
+                <p class="text-white-50" id="proyectosVacio">Cargando proyectos...</p>
 
               </div>
             </div>
@@ -302,11 +278,13 @@
 
             <h6 class="text-warning mb-2"><i class="bi bi-person-plus-fill me-2"></i>Añadir Integrantes al Equipo</h6>
             <p class="text-white-50 small mb-3">Busca usuarios registrados exclusivamente por su nombre de usuario:</p>
-            
+
             <div class="input-group mb-3">
               <input type="text" class="form-control auth-input" id="inputBuscarUsuario" placeholder="Ej. Ejemplo_01">
               <button class="btn btn-outline-light btn-glow" type="button" id="btnBuscarUsuario"><i class="bi bi-search"></i> Buscar</button>
             </div>
+
+            <div class="alert alert-danger py-2 small d-none" id="proyectoMensaje" role="alert"></div>
 
             <div class="selected-members-box p-3 rounded-3 mb-2" id="contenedorMiembrosSeleccionados">
               <span class="text-white-50 small d-block mb-2">Miembros añadidos:</span>
@@ -329,6 +307,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../Js/Pantallas.js"></script>
+  <script src="../Js/api.js"></script>
   <script src="../Js/AreaTrabajo.js"></script>
 </body>
 </html>
