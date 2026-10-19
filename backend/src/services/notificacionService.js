@@ -38,4 +38,30 @@ async function avisarNuevosMiembros(workspace, admin, usuarios) {
   );
 }
 
-module.exports = { avisarCambioUsuario, avisarNuevosMiembros };
+// Avisa a cada responsable que se le asignó una tarea: [{ usuarioId, tarea }]
+async function avisarTareasAsignadas(workspace, admin, asignaciones) {
+  if (asignaciones.length === 0) return;
+
+  await Notificacion.insertMany(
+    asignaciones.map(({ usuarioId, tarea }) => ({
+      destinatario: usuarioId,
+      tipo: 'tarea_asignada',
+      mensaje: `Se te asignó la tarea "${tarea.titulo}" en ${workspace.titulo}`,
+      workspace: workspace._id,
+      origen: admin._id,
+    }))
+  );
+}
+
+// Avisa al administrador que una asignación superó el límite y espera su excepción
+async function avisarLimbo(workspace, tarea, usuario) {
+  await Notificacion.create({
+    destinatario: workspace.creador,
+    tipo: 'limbo',
+    mensaje: `${usuario.usuario} superó su límite de tareas con "${tarea.titulo}" (${workspace.titulo}); requiere tu aprobación`,
+    workspace: workspace._id,
+    origen: usuario._id,
+  });
+}
+
+module.exports = { avisarCambioUsuario, avisarNuevosMiembros, avisarTareasAsignadas, avisarLimbo };

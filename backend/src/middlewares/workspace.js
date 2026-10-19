@@ -1,5 +1,6 @@
 const Workspace = require('../models/Workspace');
 const Tablero = require('../models/Tablero');
+const Tarea = require('../models/Tarea');
 const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
 
@@ -24,6 +25,19 @@ const cargarTablero = asyncHandler(async (req, _res, next) => {
   next();
 });
 
+// Para rutas /tareas/:id: carga la tarea y el workspace al que pertenece
+const cargarTarea = asyncHandler(async (req, _res, next) => {
+  const tarea = await Tarea.findById(req.params.id);
+  if (!tarea) throw ApiError.noEncontrado('La tarea no existe');
+
+  const workspace = await Workspace.findOne({ _id: tarea.workspace, activo: true });
+  if (!workspace) throw ApiError.noEncontrado('El proyecto de esta tarea ya no existe');
+
+  req.tarea = tarea;
+  req.workspace = workspace;
+  next();
+});
+
 // Pertenecer al equipo del workspace
 function esMiembro(req, _res, next) {
   const pertenece = req.workspace.miembros.some((miembro) => miembro.usuario.equals(req.usuario._id));
@@ -39,4 +53,4 @@ function esAdminWorkspace(req, _res, next) {
   next();
 }
 
-module.exports = { cargarWorkspace, cargarTablero, esMiembro, esAdminWorkspace };
+module.exports = { cargarWorkspace, cargarTablero, cargarTarea, esMiembro, esAdminWorkspace };
