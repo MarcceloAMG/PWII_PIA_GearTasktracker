@@ -2,7 +2,7 @@
 
 Plataforma de gestión de equipos de trabajo con asignación **manual o automática** de tareas y herramientas administrativas para medir el rendimiento de cada integrante.
 
-Proyecto de **Programación Web II** (UANL) — 2.º avance: Back End + Front End.
+Proyecto de **Programación Web II**  — 2.º avance: Back End + Front End.
 
 ## Integrantes
 
@@ -12,7 +12,7 @@ Proyecto de **Programación Web II** (UANL) — 2.º avance: Back End + Front En
 | González Maldonado Adrián Marcelo | 1973137 |
 | Nicolás Saucedo Eduardo | 2015299 |
 
-Equipo: sin número asignado.
+Equipo: 
 
 ## Descripción
 
